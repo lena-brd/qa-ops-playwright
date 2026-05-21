@@ -24,7 +24,11 @@ class DashboardPage {
 
   async navigateToCart() {
     await this.cart.click();
-    await this.page.locator('div li').first().waitFor();
+    await this.page.waitForLoadState('networkidle');
+    await this.page
+      .locator('div li')
+      .first()
+      .waitFor({ state: 'visible', timeout: 10000 });
   }
 }
 
