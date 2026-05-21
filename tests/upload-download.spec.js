@@ -1,5 +1,7 @@
 import { test, expect } from '@playwright/test';
 const ExcelJS = require('exceljs');
+const path = require('path');
+const fs = require('fs');
 
 async function writeExcelTest(searchText, replacedText, change, filePath) {
   const workbook = new ExcelJS.Workbook();
@@ -8,10 +10,7 @@ async function writeExcelTest(searchText, replacedText, change, filePath) {
 
   const output = await readExcel(worksheet, searchText);
 
-  const cell = worksheet.getCell(
-    output.row,
-    output.column + change.colChange, // ✅ fixed: was change.columnChange
-  );
+  const cell = worksheet.getCell(output.row, output.column + change.colChange);
   cell.value = replacedText;
   await workbook.xlsx.writeFile(filePath);
 }
@@ -37,6 +36,18 @@ test('Upload download excel validation', async ({ page }) => {
   const textSearch = 'Mango';
   const updateValue = '350';
 
+  // ✅ Determine the correct download directory
+  const downloadDir = process.env.CI
+    ? '/tmp/downloads' // GitHub Actions uses /tmp
+    : path.join(process.env.HOME, 'downloads'); // Local uses ~/downloads
+
+  // Create directory if it doesn't exist
+  if (!fs.existsSync(downloadDir)) {
+    fs.mkdirSync(downloadDir, { recursive: true });
+  }
+
+  const filePath = path.join(downloadDir, 'download.xlsx');
+
   await page.goto(
     'https://rahulshettyacademy.com/upload-download-test/index.html',
   );
@@ -45,8 +56,7 @@ test('Upload download excel validation', async ({ page }) => {
   await page.getByRole('button', { name: 'Download' }).click();
   const dl = await downloadPromise;
 
-  // ✅ Save the downloaded file before reading/writing it
-  const filePath = '/Users/elenabrd/downloads/download.xlsx';
+  // ✅ Save the downloaded file
   await dl.saveAs(filePath);
 
   await writeExcelTest(
