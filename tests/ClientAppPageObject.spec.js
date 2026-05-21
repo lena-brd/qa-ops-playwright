@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
 const { PageObjectManager } = require('../pageobjects/PageObjectManager.js');
 
-// const dataset = JSON.parse(
-//   JSON.stringify(require('../utils/placeorderTestData.json')),
-// );
+const dataset = JSON.parse(
+  JSON.stringify(require('../utils/placeorderTestData.json')),
+);
 
 require('dotenv').config();
 

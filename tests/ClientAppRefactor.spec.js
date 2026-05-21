@@ -1,6 +1,10 @@
 import { test, expect } from '@playwright/test';
 require('dotenv').config();
 
+const dataset = JSON.parse(
+  JSON.stringify(require('../utils/placeorderTestData.json')),
+);
+
 const email = process.env.EMAIL;
 const password = process.env.PASSWORD;
 
