@@ -5,7 +5,6 @@ const email = process.env.EMAIL;
 const password = process.env.PASSWORD;
 
 test('Security test request intercept', async ({ page }) => {
-  // login and reach orders page
   const products = page.locator('.card-body');
   const productName = 'ZARA COAT 3';
 
