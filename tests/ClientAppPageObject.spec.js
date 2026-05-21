@@ -27,7 +27,7 @@ test('Add an item to the cart', async ({ page }) => {
   await dashboardPage.navigateToCart();
 
   const checkoutPage = pageObjectManager.getCheckoutPage();
-  const bool = await checkoutPage.productIsVisible(dataset.productName);
+  // const bool = await checkoutPage.productIsVisible(dataset.productName);
   // expect(bool).toBeTruthy();
   await checkoutPage.submitOrder(countryName);
 
@@ -39,5 +39,5 @@ test('Add an item to the cart', async ({ page }) => {
   await expect(page.locator('.hero-primary')).toHaveText(' Thankyou for the order. ');
 
   const ordersPage = pageObjectManager.getOrdersPage();
-  // expect(await ordersPage.orderIsPresent()).toBeTruthy();
+  expect(await ordersPage.orderIsPresent()).toBeTruthy();
 });
