@@ -14,6 +14,7 @@ class CheckoutPage {
   }
 
   async submitOrder(countryNameText) {
+    await this.checkoutButton.waitFor({ state: 'visible', timeout: 60000 });
     await this.checkoutButton.click();
     await this.notValidValueCard.clear();
     await this.placeholderCountry.pressSequentially(countryNameText);
